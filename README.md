@@ -1,3 +1,5 @@
+This modified version only implements ad-hoc limited filters support for timelion queries
+
 [![repofunding](https://img.shields.io/badge/powered%20by-repofunding-green.svg)](https://github.com/gbrian/repofunding) [![](https://img.shields.io/badge/support-5€-lightgray.svg)](https://www.paypal.me/repofunding/5)
 
 # grafana-timelion-datasource ![version](https://img.shields.io/badge/version-1.0.1-blue.svg)
