@@ -222,6 +222,8 @@ System.register(["lodash"], function (_export, _context) {
                 }, {
                     key: "getAdHocFilterConditions",
                     value: function getAdHocFilterConditions() {
+                        var _this4 = this;
+
                         var conditions = [];
 
                         this.templateSrv.variables.filter(function (variable) {
@@ -240,7 +242,7 @@ System.register(["lodash"], function (_export, _context) {
                                 conditions.push({
                                     key: filter.operator === "!=" ? "-" + key : key,
                                     value: value,
-                                    operator: ':'
+                                    operator: _this4.getAdHocFilterConditionOperator(filter.operator)
                                 });
                             });
                         });
@@ -259,6 +261,22 @@ System.register(["lodash"], function (_export, _context) {
                         return name;
                     }
                 }, {
+                    key: "getAdHocFilterConditionOperator",
+                    value: function getAdHocFilterConditionOperator(filterOperator) {
+                        switch (filterOperator) {
+                            case '>':
+                                return ':>';
+                            case '<':
+                                return ':<';
+                            case '>=':
+                                return ':>=';
+                            case '<=':
+                                return ':<=';
+                            default:
+                                return ':';
+                        }
+                    }
+                }, {
                     key: "expandTemplate",
                     value: function expandTemplate(target, options) {
                         _.map(Object.keys(options.scopedVars), function (key) {
@@ -270,7 +288,7 @@ System.register(["lodash"], function (_export, _context) {
                 }, {
                     key: "buildQueryParameters",
                     value: function buildQueryParameters(options) {
-                        var _this4 = this;
+                        var _this5 = this;
 
                         var oThis = this;
                         //remove placeholder targets
@@ -296,8 +314,8 @@ System.register(["lodash"], function (_export, _context) {
 
                         var targets = _.map(options.targets, function (target) {
                             return {
-                                target: _this4.expandTemplate(target.target, options),
-                                interval: _this4.expandTemplate(target.interval || "auto", options)
+                                target: _this5.expandTemplate(target.target, options),
+                                interval: _this5.expandTemplate(target.interval || "auto", options)
                             };
                         });
 
@@ -328,7 +346,7 @@ System.register(["lodash"], function (_export, _context) {
                         });
 
                         var variables = _.filter(_.map(options.targets, function (t) {
-                            return _this4.expandTemplate(t.target, options);
+                            return _this5.expandTemplate(t.target, options);
                         }), function (t) {
                             return t.indexOf("$") == 0;
                         }).join(",");
@@ -348,7 +366,7 @@ System.register(["lodash"], function (_export, _context) {
 
                         options.queries = _.map(queries, function (q) {
                             if (adHoc.name !== null) {
-                                var filterStr = _this4.buildAdhocString(adHoc.conditions);
+                                var filterStr = _this5.buildAdhocString(adHoc.conditions);
                                 var filterRx = new RegExp("AND_\\$" + adHoc.name, 'g');
                                 var valueRx = new RegExp("\\$" + adHoc.name, 'g');
 

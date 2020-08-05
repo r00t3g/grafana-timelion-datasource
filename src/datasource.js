@@ -174,7 +174,7 @@ export class TimelionDatasource {
                     conditions.push({
                         key: filter.operator === "!=" ? `-${key}` : key,
                         value,
-                        operator: ':'
+                        operator: this.getAdHocFilterConditionOperator(filter.operator)
                     });
                 });
             });
@@ -186,6 +186,21 @@ export class TimelionDatasource {
         const {name = null} = this.templateSrv.variables.find(variable => variable.type === 'adhoc') || {};
 
         return name;
+    }
+
+    getAdHocFilterConditionOperator(filterOperator) {
+        switch (filterOperator) {
+            case '>':
+                return ':>';
+            case '<':
+                return ':<';
+            case '>=':
+                return ':>=';
+            case '<=':
+                return ':<=';
+            default:
+                return ':';
+        }
     }
 
     expandTemplate(target, options) {
